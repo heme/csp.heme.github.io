@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Securing Content in Browser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>
+    <script src="/js/main.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        hr {
+            border-top: 1px solid #ccc;
+        }
+        textarea {
+            height: 100px;
+            width: 100%;
+        }
+        iframe {
+            border-width: 3px;
+            height: 100px;
+            width: 250px;
+        }
+        td {
+            padding-bottom: 16px !important;
+        }
+        tbody td:first-child {
+            text-align: right;
+        }
+        .vert-text {
+            writing-mode:bt-lr;
+        }
+    </style>
+</head>
+<body style="background-color:#efefef;">
+
+    <div class="container">
+        <div class="row">
+            <h1 style="font-style:italic;">Securing Content in Browser</h1>
+            <p>The iframes below pass a message to this outer/parent page. Each iframe needs to be aware of the parent frame and determine when it is safe to send its message.</p>
+            <p>Depending on the domain of this page, the frames below will either send their message or restrict access.</p>
+            <div id="authorizedDesc" class="hidden alert alert-success">
+                <i class="h1 fa fa-user" style="margin-top:0;margin-bottom:0;"></i> 
+                <strong>Authorized Party - </strong> You are viewing this page as an authorized party. <a href="http://malicious-party/">Switch to unauthorized party</a>
+            </div>
+            <div id="unauthorizedDesc" class="hidden alert alert-danger">
+                <span class="fa-stack fa-lg"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x text-danger"></i></span>
+                <strong>Unauthorized Party - </strong> You are viewing this page as an unauthorized party. 
+                <a href="http://company-a/">Switch to authorized party A</a> <a href="http://company-b/">or B</a></div>
+        </div>
+            <hr noshade="noshade" />
+
+        <div class="row">
+            <div class="col-md-offset-1 col-md-9">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h4>Secured postMessage by Origin Whitelist &amp; CSP</h4>
+                                <iframe title='listening' id="csp" onload="iframeLoad(this);" src="http://inner-frame/csp.html"></iframe>
+                            </td><td>
+                                <h4 style="color:#999">Result: <span id="cspLabel" class="label label-default"><i id="cspIcon" class="fa"></i> Listening</span></h4>
+                                <textarea id="cspData"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Secured postMessage by Origin Whitelist</h4>
+                                <iframe title='listening' id="whitelist" onload="iframeLoad(this);" src="http://inner-frame/whitelist.html"></iframe>
+                            </td><td>
+                                <h4 style="color:#999">Result: <span id="whitelistLabel" class="label label-default"><i id="whitelistIcon" class="fa"></i> Listening</span></h4>
+                                <textarea id="whitelistData"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Secured postMessage by Origin</h4>
+                                <iframe title='listening' id="secured" onload="iframeLoad(this);" src="http://inner-frame/secured.html"></iframe>
+                            </td><td>
+                                <h4 style="color:#999">Result: <span id="securedLabel" class="label label-default"><i id="securedIcon" class="fa"></i> Listening</span></h4>
+                                <textarea id="securedData"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Unsecured postMessage</h4>
+                                <iframe title='listening' id="unsecured" onload="iframeLoad(this);" src="http://inner-frame/unsecured.html"></iframe>
+                            </td><td>
+                                <h4 style="color:#999">Result: <span id="unsecuredLabel" class="label label-default"><i id="unsecuredIcon" class="fa"></i> Listening</span></h4>
+                                <textarea id="unsecuredData"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</body>
+</html>
